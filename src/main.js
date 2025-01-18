@@ -1,34 +1,49 @@
 import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
+
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
+import { createGalleryCard } from './js/render-functions';
+import { fetchPhotosByQuery } from './js/pixabay-api';
+
 const searchForm = document.querySelector('.input-search');
 const galleryElem = document.querySelector('.gallery-list');
+const loader = document.querySelector('.loader');
 
-const createGalleryCard = imgCard => {
-  return `<li class="gallery-card"> <img class="gallery-img" src="${imgCard.largeImageURL}" alt="${imgCard.tags}"/></li>`;
-};
+loader.style.display = 'none';
+
+const simpleLight = new SimpleLightbox('.gallery-list a', {
+  captions: true,
+  captionsData: 'alt',
+  captionDelay: 250,
+  scrollZoom: false,
+});
 
 const onSearchFormSubmit = event => {
   event.preventDefault();
   const searchData = event.currentTarget.elements.input.value.trim();
   if (searchData === '') {
-    alert('Поле должно быть заполнено!');
+    iziToast.error({
+      title: 'Ошибка',
+      message: 'Поле должно быть заполнено!',
+      position: 'bottomRight',
+      closeOnClick: true,
+    });
     return;
   }
-  fetch(
-    `https://pixabay.com/api/?key=48265193-8ac6160565acb44bbb7dfb3fe&q=${searchData}&image_type=photo&per_page=9`
-  )
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-      return response.json();
-    })
+  loader.style.display = 'flex';
+
+  fetchPhotosByQuery(searchData)
     .then(data => {
       if (data.hits.length === 0) {
-        alert('По запросу информации не найдено! Введите другой запрос.');
+        iziToast.error({
+          title: 'Ошибка',
+          message:
+            'Извините, нет результатов, соответствующих вашему поисковому запросу. Попробуйте еще раз!',
+          position: 'bottomRight',
+          closeOnClick: true,
+        });
+
         galleryElem.innerHTML = '';
         searchForm.reset();
         return;
@@ -37,11 +52,18 @@ const onSearchFormSubmit = event => {
         .map(el => createGalleryCard(el))
         .join('');
       galleryElem.innerHTML = galleryTemplate;
-      console.log(data);
+
+      simpleLight.refresh();
+      loader.style.display = 'none';
     })
     .catch(error => {
       if (error.mesage === '404') {
-        arert('Ошибка');
+        iziToast.error({
+          title: 'Ошибка',
+          message: 'Ошибка',
+          position: 'bottomRight',
+          closeOnClick: true,
+        });
       }
     });
 };

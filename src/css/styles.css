@@ -1,3 +1,4 @@
+@import 'simplelightbox/dist/simple-lightbox.min.css';
 h1,
 h2,
 h3,
@@ -90,11 +91,50 @@ img {
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 24px;
+  column-gap: 24px;
+  row-gap: 24px;
+  align-items: center;
 }
-.gallery-img {
+
+.gallery-card {
   border: 1px solid #808080;
-  width: 360px;
-  height: 200px;
+  max-width: 360px;
+}
+.inform-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  margin-top: 10px;
+}
+.inform {
+  text-align: center;
+}
+.inform-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.33333;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+}
+.inform-text {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 2;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+}
+.sl-wrapper .sl-image img {
+  border-radius: 30px;
+  border: 5px solid rgb(101, 147, 245);
+}
+.sl-caption {
+  border-radius: 0 0 30px 30px;
+  border: 2px solid rgb(101, 147, 245);
+}
+.loader {
+  justify-content: center;
 }
 /* ================================= */
