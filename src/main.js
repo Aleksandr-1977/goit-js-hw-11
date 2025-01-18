@@ -46,6 +46,7 @@ const onSearchFormSubmit = event => {
 
         galleryElem.innerHTML = '';
         searchForm.reset();
+        loader.style.display = 'none';
         return;
       }
       const galleryTemplate = data.hits
@@ -60,7 +61,7 @@ const onSearchFormSubmit = event => {
       if (error.mesage === '404') {
         iziToast.error({
           title: 'Ошибка',
-          message: 'Ошибка',
+          message: 'Ошибка загрузки изображений. Попробуйте снова.',
           position: 'bottomRight',
           closeOnClick: true,
         });
