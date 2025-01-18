@@ -28,7 +28,7 @@ const onSearchFormSubmit = event => {
     })
     .then(data => {
       if (data.hits.length === 0) {
-        alert('По запросу информации не найдено. Введите другой запрос.');
+        alert('По запросу информации не найдено! Введите другой запрос.');
         galleryElem.innerHTML = '';
         searchForm.reset();
         return;
